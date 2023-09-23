@@ -30,11 +30,12 @@ class CRUD{
          */
 	protected function connect(){
 		try{
-			$this->con = new PDO('oci:dbname=//172.16.0.2/phcdb', 'cfmis', 'cfmis');
+			// $this->con = new PDO('oci:dbname=//172.16.0.2/phcdb', 'cfmis', 'cfmis');
+			$this->con = new PDO('oci:dbname=//'.$this->host.'/'.$this->db_name, $this->db_user, $this->db_pass);
 			$this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 			//$this->con->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
            	}catch(PDOException $ex){
-			return $ex->getMessage();
+				return $ex->getMessage();
 			}
 		}
     /**	___________________________________________________________________________________________

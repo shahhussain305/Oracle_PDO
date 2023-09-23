@@ -14,13 +14,13 @@ class DBU {
     static $view_user = array(
                                 'user'=>'Y2ZtaXM=', //Y2ZtaXM=
                                 'key'=>'Y2ZtaXM=',//cfmis
-                                'host'=>'MTcyLjE2LjAuMg==/cGhjZGI=',//172.16.0.2/phcdb
-                                'db' => 'Y2ZtaXM=' //cfmis
+                                'host'=>'MTcyLjE2LjAuMg==/cGhjZGI=',//172.16.0.2
+                                'db' => 'cGhjZGI=' //phcdb
                                 );
     static $dba_user = array(
                                 'user'=>'Y2ZtaXM=', //Y2ZtaXM=
                                 'key'=>'Y2ZtaXM=',//cfmis
-                                'host'=>'MTcyLjE2LjAuMg==/cGhjZGI=',//172.16.0.2/phcdb
-                                'db' => 'Y2ZtaXM=' //cfmis
+                                'host'=>'MTcyLjE2LjAuMg==',//172.16.0.2
+                                'db' => 'cGhjZGI=' //phcdb
                                 );
     }//
