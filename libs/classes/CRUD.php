@@ -111,7 +111,7 @@ class CRUD{
 					$statement = $this->con->prepare($sql);
 					$result = $statement->execute($bindVars);
 					if(isset($result) && $result > 0){
-                        return var_dump($result);//$statement->fetchAll();
+                        return var_dump($statement);//$statement->fetchAll();
                     }
                     else{
                         return array();//means no record was found
