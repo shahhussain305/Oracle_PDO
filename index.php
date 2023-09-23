@@ -10,13 +10,9 @@
             $db = new App_DB(DBU::$dba_user);//passing database login details from DbPathArray.php file
             //--------------Calling of Methods from each class--------------------------
             $jcode = isset($_POST['j']) && !empty($_POST['j']) ? $_POST['j']:'371';
-            $sql = "SELECT * FROM CAUSELIST_VU_SCREEN WHERE JUDGECODE LIKE :jcode";
-                    // WHERE JUDGECODE LIKE :jcode AND 
-                    //               TO_CHAR(MDATE,'YYYY-MM-DD') = :dated 
-                    //               ORDER BY CASESTAGECODE ASC,CASESNO ASC";
-            // $param = array(':jcode'=>$jcode.'%',':dated'=>'2023-09-25');
-            $param = array(':jcode'=>$jcode.'%');
-            $list = $db->getRecordSetFilled($sql,$param);
+            // $sql = "SELECT * FROM CAUSELIST_VU_SCREEN WHERE JUDGECODE LIKE :jcode";
+            $sql = "SELECT * FROM CAUSELIST_VU_SCREEN WHERE JUDGECODE LIKE '".$jcode."%' AND TO_CHAR(MDATE,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD') ORDER BY CASESTAGECODE ASC,CASESNO ASC";
+            $list = $db->getRecordSetFilled($sql);
             echo('Total: '.count($list));
             if(isset($list) && is_array($list) && count($list) > 0){
                 print_r($list);
