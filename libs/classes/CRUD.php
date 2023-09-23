@@ -1,18 +1,4 @@
 <?php 
-/*_____________________________________________________________________________________
-	Author of the Script: 				Shah  Hussain 
-	Email: 								shahhussain305@gmail.com
-	URL: www.esdn.com.pk
-	-----------------------------------------------------------------------------------
-	Use of PDO (PHP Data Objects: 
-	1- Open your php.ini file and search for:
-	   ;extension=php_pdo_mysql.dll
-	   Remove ";" from starting of the line and it will enable the PDO for MySql Database
-	   Tested on IIS Version: 8.5.9600.16384 Windows 8.1 Professinal, Ubuntu 16.04, 18.04
-	2- UnComment 
-			//echo($ex->getMessage()); //Developer Machine: Display Exceptions in browser	
-  _______________________________________________________________________________________*/
-
 class CRUD{
 	private $db_user;
 	private $db_pass;
@@ -24,14 +10,14 @@ class CRUD{
 	public $sqlToReturn;
 	public $tempVar;
 	
-	//default constructor to build the connection to MySql db
+	//default constructor to build the connection to db
 	protected function __construct($user,$key,$host,$db){
 		$this->db_user = $user;
 		$this->db_pass = $key;
 		$this->db_name = $db;
 		$this->host = $host;
 		}
-				
+			
 	function __destruct(){
 		try{
 			$this->con = null;
@@ -43,24 +29,12 @@ class CRUD{
          * connect() function to connect to database
          */
 	protected function connect(){
-		//try{
-			// try{
-			// 	// $this->con = new PDO("sqlsrv:server=$this->host; database = $this->db_name", $this->db_user, $this->db_pass);
-			// 	// $this->con->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-			// 	$this->con = new PDO($this->db_name,$this->db_user,$this->db_pass);
-			// 	//$this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			// 	if(!$this->con){
-			// 		die('Connection error!');
-			// 	}
-			// }
-			// catch(PDOException $e){
-			// 	exit("1: Error: ".$e->getMessage());
-			// }
-			try {
-				$this->con = new PDO('oci:dbname=//172.16.0.2/phcdb', 'cfmis', 'cfmis');
-				$this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			} catch(PDOException $e) {
-				echo 'ERROR: ' . $e->getMessage();
+		try{
+			$this->con = new PDO('oci:dbname=//172.16.0.2/phcdb', 'cfmis', 'cfmis');
+			$this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			//$this->con->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+           	}catch(PDOException $ex){
+			return $ex->getMessage();
 			}
 		}
     /**	___________________________________________________________________________________________
@@ -91,6 +65,7 @@ class CRUD{
 					return $ex->getMessage(); //Developer Machine: Display Exceptions in browser
 					}				
 				}//getRecordSet()
+			
 			/**
                          * function to return the filled array/ResultSet according to the provided query, otherwise returns null array
                          * length of the array will be less than 1 
@@ -105,13 +80,14 @@ class CRUD{
                          *      echo($method->errorMsg("","Sorry there was no record found"));
                          * }
                          */
-                public function getRecordSetFilled($sql,$bindVars=array()){
+            public function getRecordSetFilled($sql,$bindVars=array()){
 				try{
 					$this->connect();
 					$statement = $this->con->prepare($sql);
-					$result = $statement->execute($bindVars);
-					if(isset($result) && $result > 0){
-                        return var_dump($statement);//$statement->fetchAll();
+					$statement->execute($bindVars);
+                    $is_there_any_row = $statement->rowCount();//if greater than 0, it will return result set
+                    if(isset($is_there_any_row) && $is_there_any_row > 0){
+                        return $statement->fetchAll(PDO::FETCH_DEFAULT);
                     }
                     else{
                         return array();//means no record was found
@@ -179,8 +155,8 @@ class CRUD{
 			try{
 				$this->connect();
 				$statement = $this->con->prepare($sql);
-				$result = $statement->execute($bindVars);
-				if($result > 0){
+				$statement->execute($bindVars);
+				if($statement->rowCount() > 0){
 					return true;
 					}
 				else{
@@ -224,8 +200,8 @@ class CRUD{
 			    $this->connect();
 			    $options = "";
 				$statement = $this->con->prepare($sql);
-				$result = $statement->execute($bindVars);				
-				 if($result > 0){
+				$statement->execute($bindVars);				
+				 if($statement->rowCount() > 0){
 					if($showEmptyFld == 1){
 						$options .= '<option value=""></option>';
 						}
@@ -331,7 +307,7 @@ class CRUD{
 					foreach($sqlsArray as $sql=>$ary){//loop over sql Array to get individval sql
 						$stmt = $this->con->prepare($sql);
 						$stmt->execute($ary);
-                    	//$this->tempVar .= 'Sql = '.$sql.' param = '.$ary.'<hr>';
+                                                //$this->tempVar .= 'Sql = '.$sql.' param = '.$ary.'<hr>';
 					}					
 					$this->con->commit();
 					$flag = true;

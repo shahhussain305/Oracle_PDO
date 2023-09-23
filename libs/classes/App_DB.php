@@ -16,7 +16,13 @@ class App_DB extends DB{
     }
     //---------------------Do not edit the above --------------------//
 
-    
+    // public function getUserName($sno){
+	// try{
+	// 	return $this->getValue("SELECT emp_name FROM employees WHERE sno = :sno ORDER BY sno DESC",array(":sno"=>$sno));
+	// 	}catch(Exception $exc){
+	// 		$this->tempVar = $exc->getMessage();
+	// 	}
+	// }
     
     
 }//DB()

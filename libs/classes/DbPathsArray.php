@@ -12,15 +12,15 @@
 class DBU {
     
     static $view_user = array(
-                                'user'=>'cfmis', //cfmis
-                                'key'=>'cfmis',//cfmis
-                                'host'=>'172.16.0.2/phcdb',//172.16.0.2/phcdb
-                                'db' => 'oci:dbname=cfmis'
+                                'user'=>'Y2ZtaXM=', //Y2ZtaXM=
+                                'key'=>'Y2ZtaXM=',//cfmis
+                                'host'=>'MTcyLjE2LjAuMg==/cGhjZGI=',//172.16.0.2/phcdb
+                                'db' => 'Y2ZtaXM=' //cfmis
                                 );
     static $dba_user = array(
-                                'user'=>'cfmis', //cfmis
-                                'key'=>'cfmis',//cfmis
-                                'host'=>'172.16.0.2/phcdb',//172.16.0.2/phcdb
-                                'db' => 'oci:dbname=172.16.0.2/phcdb'
+                                'user'=>'Y2ZtaXM=', //Y2ZtaXM=
+                                'key'=>'Y2ZtaXM=',//cfmis
+                                'host'=>'MTcyLjE2LjAuMg==/cGhjZGI=',//172.16.0.2/phcdb
+                                'db' => 'Y2ZtaXM=' //cfmis
                                 );
     }//
