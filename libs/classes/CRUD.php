@@ -206,14 +206,15 @@ class CRUD{
 			    $options = "";
 				$statement = $this->con->prepare($sql);
 				$statement->execute($bindVars);
-				//  if($statement->rowCount() > 0){
+				$total = $statement->fetchColumn();
+				  if($total > 0){
 					if($showEmptyFld == 1){
 						$options .= '<option value=""></option>';
 						}
 					foreach($statement as $row) {
 						$options .= '<option value="'.$row[$valueMember].'"> '. $row[$displayMember] .' </option>'.PHP_EOL;
 						}					
-					// }
+					 }
 					return $options;
 					$this->con = null;
 			 }catch(PDOException $exc){ 
