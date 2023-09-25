@@ -30,11 +30,14 @@ class CRUD{
          */
 	protected function connect(){
 		try{
-			// $this->con = new PDO('oci:dbname=//172.16.0.2/phcdb', 'cfmis', 'cfmis');
 			$this->con = new PDO('oci:dbname=//'.$this->host.'/'.$this->db_name, $this->db_user, $this->db_pass);
 			$this->con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-			//$this->con->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-           	}catch(PDOException $ex){
+			if($this->con){
+				//echo('Connection established<hr>');
+			}else{
+				echo('Connection to database failed!');
+			}
+			}catch(PDOException $ex){
 				return $ex->getMessage();
 			}
 		}
@@ -86,9 +89,10 @@ class CRUD{
 					$this->connect();
 					$statement = $this->con->prepare($sql);
 					$statement->execute($bindVars);
-                    $is_there_any_row = $statement->rowCount();//if greater than 0, it will return result set
+					$recordSet = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    $is_there_any_row = count($recordSet);//if greater than 0, it will return result set
                     if(isset($is_there_any_row) && $is_there_any_row > 0){
-                        return $statement->fetchAll(PDO::FETCH_DEFAULT);
+                        return $recordSet;
                     }
                     else{
                         return array();//means no record was found
@@ -201,15 +205,15 @@ class CRUD{
 			    $this->connect();
 			    $options = "";
 				$statement = $this->con->prepare($sql);
-				$statement->execute($bindVars);				
-				 if($statement->rowCount() > 0){
+				$statement->execute($bindVars);
+				//  if($statement->rowCount() > 0){
 					if($showEmptyFld == 1){
 						$options .= '<option value=""></option>';
 						}
 					foreach($statement as $row) {
 						$options .= '<option value="'.$row[$valueMember].'"> '. $row[$displayMember] .' </option>'.PHP_EOL;
 						}					
-					}
+					// }
 					return $options;
 					$this->con = null;
 			 }catch(PDOException $exc){ 
@@ -244,7 +248,7 @@ class CRUD{
 			}
 		
 		/**
-                 * 	getNumChars($txt,$numChars,$side='L') function takes three @params as 
+            * 	getNumChars($txt,$numChars,$side='L') function takes three @params as 
 			1- $txt: sample text
 			2- $numChars : need to returns number of character from text
 			3- $side : 

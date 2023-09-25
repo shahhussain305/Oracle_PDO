@@ -9,14 +9,21 @@
             //-Creating Object and passing user info to the constructor of App_DB class-
             $db = new App_DB(DBU::$dba_user);//passing database login details from DbPathArray.php file
             //--------------Calling of Methods from each class--------------------------
-            $jcode = isset($_POST['j']) && !empty($_POST['j']) ? $_POST['j']:'371';
-            // $sql = "SELECT * FROM CAUSELIST_VU_SCREEN WHERE JUDGECODE LIKE :jcode";
-            $sql = "SELECT * FROM CAUSELIST_VU_SCREEN WHERE JUDGECODE LIKE '".$jcode."%' AND TO_CHAR(MDATE,'YYYY-MM-DD') = TO_CHAR(SYSDATE,'YYYY-MM-DD') ORDER BY CASESTAGECODE ASC,CASESNO ASC";
-            $list = $db->getRecordSetFilled($sql);
+            $sql = "SELECT * FROM casename WHERE CASENAMECODE > :casecode";
+            $param = array(':casecode'=>'50');
+            $list = $db->getRecordSetFilled($sql,$param);
             echo('Total: '.count($list));
-            if(isset($list) && is_array($list) && count($list) > 0){
-                print_r($list);
-            }else{
+            if(isset($list) && is_array($list) && count($list) > 0){ ?>
+            <table border="1" cellspacing="0" cellpadding="10" width="100%">
+            <?php foreach($list as $row){ ?>
+                    <tr>
+                        <td><?php echo($row['CASENAMECODE']);?></td>
+                        <td><?php echo($row['CASENAME']);?></td>
+                        <td><?php echo($row['CASENAME_ALIAS']);?></td>
+                    </tr>
+                <?php } ?>
+            </table>
+            <?php }else{
                 print_r($list);
                 echo('<hr>');
             }
